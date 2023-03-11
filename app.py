@@ -35,7 +35,7 @@ def predict():
     inputQuery4 = request.form['query4']
     inputQuery5 = request.form['query5']
 
-    model = pickle.load(open("breastCancerModel.pkl", "rb"))
+    model = pickle.load(open("PumpDiagnosticModel.pkl", "rb"))
     
     
     data = [[inputQuery1, inputQuery2, inputQuery3, inputQuery4, inputQuery5]]
