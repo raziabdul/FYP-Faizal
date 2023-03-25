@@ -1,3 +1,4 @@
+import json
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier 
@@ -7,14 +8,11 @@ import pickle
 
 app = Flask(__name__,template_folder='template')
 
-
-
 q = ""
 
 @app.route("/")
 def loadPage():
 	return render_template('home.html', query="")
-
 
 @app.route("/predict", methods=['POST'])
 def predict():
@@ -27,9 +25,17 @@ def predict():
 
     model = pickle.load(open("PumpDiagnosticModel.pkl", "rb"))
     
+    # convert user input data to JSON format
+    data = {"mean": inputQuery1,
+            "max": inputQuery2,
+            "kurtosis": inputQuery3,
+            "variance": inputQuery4,
+            "onenorm": inputQuery5}
+    json_data = json.dumps(data)
     
-    data = [[inputQuery1, inputQuery2, inputQuery3, inputQuery4, inputQuery5]]
-    new_df = pd.DataFrame(data, columns = ['mean', 'max', 'kurtosis', 'variance', 'onenorm'])
+    # create a DataFrame from the JSON data
+    new_df = pd.read_json(json_data, orient='index')
+    new_df = new_df.transpose()
     
     single = model.predict(new_df)
     probablity = model.predict_proba(new_df)[:,1]
@@ -51,4 +57,5 @@ def predict():
     
 if __name__ == "__main__":
     app.run()
+
 
