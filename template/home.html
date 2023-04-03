@@ -5,6 +5,7 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
+<!--OROGINAL CODE
 	<div class="container mt-3">
 		<h1>Pump Diagnostic System</h1>
 		<hr>
@@ -31,6 +32,37 @@
 			</div>
 			<button type="submit" class="btn btn-primary">Predict</button>
 		</form>
+		<hr>
+		{% if output1 %}
+		<div class="alert alert-info">
+			<p>{{ output1 }}</p>
+			<p>{{ output2 }}</p>
+		</div>
+
+-->
+	<div class="container mt-3">
+		<h1>Pump Diagnostic System</h1>
+		<hr>
+		<form method="post" action="{{ url_for('predict') }}">
+			<div class="form-group">
+				<label for="json-input">JSONstring:</label>
+				<input type="text" class="form-control" id="json-input" name="json" required>
+	
+			</div>
+			<button type="submit" class="btn btn-primary">Predict</button>
+		</form>
+		<script>
+      			const form = document.getElementById('json-form');
+      
+      			form.addEventListener('submit', (event) => {
+        			event.preventDefault();
+        
+        			const jsonData = JSON.parse(document.getElementById('json-input').value);
+        
+        			console.log(jsonData);
+        		// send the JSON data to the server using AJAX or fetch()
+      			});
+    		</script>
 		<hr>
 		{% if output1 %}
 		<div class="alert alert-info">
