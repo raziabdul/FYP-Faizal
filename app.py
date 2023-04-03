@@ -17,19 +17,26 @@ def loadPage():
 @app.route("/predict", methods=['POST'])
 def predict():
     # Retrieve input values
-    input_values = [request.form[f"query{i}"] for i in range(1, 6)]
+    # input_values = [request.form[f"query{i}"] for i in range(1, 6)]
+    input_values = [ request.form[f"jsonData"] ]
 
     # Load the trained model
     model = pickle.load(open("PumpDiagnosticModel.pkl", "rb"))
 
     # Create a DataFrame from user input
-    data = {"mean": input_values[0],
-            "max": input_values[1],
-            "kurtosis": input_values[2],
-            "variance": input_values[3],
-            "onenorm": input_values[4]}
-    new_df = pd.DataFrame(data, index=[0])
+    #data = {"mean": input_values[0],
+    #        "max": input_values[1],
+    #        "kurtosis": input_values[2],
+    #        "variance": input_values[3],
+    #        "onenorm": input_values[4]}
+    #new_df = pd.DataFrame(data, index=[0])
 
+    #data = {"jsonString": input_values[0]}
+    
+    # if data is string, need a way to convert to JSON
+    
+    #new_df = pd.DataFrame(data, index=[0])
+    new_df = pd.DataFrame(jsonData, index=[0])
     # Make a prediction and calculate the probability
     prediction = model.predict(new_df)
     probability = model.predict_proba(new_df)[:, 1]
